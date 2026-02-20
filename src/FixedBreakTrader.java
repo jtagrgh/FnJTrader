@@ -1,4 +1,4 @@
-public class FixedBreakTrader extends Indicator<Order> {
+public class FixedBreakTrader implements Indicator<Order> {
     private final FixedBreakIndicator indicator;
 
     public FixedBreakTrader(FixedBreakIndicator indicator) {

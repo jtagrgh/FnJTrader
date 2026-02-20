@@ -1,4 +1,4 @@
-public class ClampedPosition extends Indicator<Position> {
+public class ClampedPosition implements Indicator<Position> {
     private final Integer upperLimit;
     private final Integer lowerLimit;
     private final Indicator<Order> trader;

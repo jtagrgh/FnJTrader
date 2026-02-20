@@ -1,4 +1,4 @@
-public class FixedBreakIndicator extends Indicator<FixedBreakIndicator.R> {
+public class FixedBreakIndicator implements Indicator<FixedBreakIndicator.R> {
     private final double breakPrice;
     private R status;
 

@@ -1,4 +1,4 @@
-public class ProfitIndicator extends Indicator<Double> {
+public class ProfitIndicator implements Indicator<Double> {
     private final Indicator<Order> indicator;
     private Order lastAction = new Order(0);
     private Double profit = 0.0;

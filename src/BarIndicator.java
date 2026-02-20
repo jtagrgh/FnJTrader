@@ -1,6 +1,6 @@
 import java.time.Instant;
 
-public class BarIndicator extends Indicator<Bar> {
+public class BarIndicator implements Indicator<Bar> {
     private final Integer duration;
 
     private BarBuilder workingBar = null;
