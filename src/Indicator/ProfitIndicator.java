@@ -1,3 +1,8 @@
+package Indicator;
+
+import Events.Order;
+import Events.MarketUpdate.*;
+
 public class ProfitIndicator implements Indicator<Double> {
     private final Indicator<Order> indicator;
     private Order lastAction = new Order(0);

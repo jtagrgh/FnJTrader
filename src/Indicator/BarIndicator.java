@@ -1,9 +1,14 @@
+package Indicator;
+
+import Events.Bar;
+import Events.MarketUpdate.*;
+
 import java.time.Instant;
 
 public class BarIndicator implements Indicator<Bar> {
     private final Integer duration;
 
-    private BarBuilder workingBar = null;
+    private Bar.Builder workingBar = null;
     private Bar lastCompleteBar = new Bar(Instant.now(), 0.0,0.0,0.0,0.0);
     private Integer updates = 0;
 
@@ -31,7 +36,7 @@ public class BarIndicator implements Indicator<Bar> {
     private void handlePriceUpdate(PriceUpdate update) {
         updates += 1;
         if (updates == 1) {
-            workingBar = new BarBuilder(update);
+            workingBar = new Bar.Builder(update);
         } else {
             workingBar.update(update);
         }

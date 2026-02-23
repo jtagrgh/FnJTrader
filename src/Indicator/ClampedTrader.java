@@ -1,3 +1,8 @@
+package Indicator;
+
+import Events.Order;
+import Events.MarketUpdate.MarketUpdate;
+
 public class ClampedTrader implements Indicator<Order> {
     private final Indicator<Order> indicator;
     private final Integer upperLimit;

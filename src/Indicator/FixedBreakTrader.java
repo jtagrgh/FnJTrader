@@ -1,3 +1,9 @@
+package Indicator;
+
+import Events.Order;
+
+import Events.MarketUpdate.*;
+
 public class FixedBreakTrader implements Indicator<Order> {
     private final FixedBreakIndicator indicator;
 
