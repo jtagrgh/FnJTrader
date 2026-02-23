@@ -8,16 +8,17 @@ public class ProfitIndicator implements Indicator<Double> {
     }
 
     @Override
-    public void update(MarketUpdate update) {
+    public Double update(MarketUpdate update) {
         indicator.update(update);
         switch (update) {
             case PriceUpdate p -> handlePriceUpdate(p);
-            default -> {}
+            case BarUpdate b -> handlePriceUpdate(b.toPriceUpdate());
         }
+        return value();
     }
 
     private void handlePriceUpdate(PriceUpdate update) {
-        profit -= lastAction.amount() * update.getPrice();
+        profit -= lastAction.amount() * update.price();
         lastAction = indicator.value();
     }
 

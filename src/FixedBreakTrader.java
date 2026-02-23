@@ -6,8 +6,9 @@ public class FixedBreakTrader implements Indicator<Order> {
     }
 
     @Override
-    public void update(MarketUpdate update) {
+    public Order update(MarketUpdate update) {
         indicator.update(update);
+        return value();
     }
 
     @Override

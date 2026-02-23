@@ -8,15 +8,16 @@ public class FixedBreakIndicator implements Indicator<FixedBreakIndicator.R> {
     }
 
     @Override
-    public void update(MarketUpdate update) {
+    public R update(MarketUpdate update) {
         switch(update) {
             case PriceUpdate p -> handlePriceUpdate(p);
-            default -> {}
+            case BarUpdate b -> handlePriceUpdate(b.toPriceUpdate());
         }
+        return value();
     }
 
     private void handlePriceUpdate(PriceUpdate update) {
-        if (update.getPrice() >= breakPrice) {
+        if (update.price() >= breakPrice) {
             status = R.ABOVE;
         } else {
             status = R.BELOW;

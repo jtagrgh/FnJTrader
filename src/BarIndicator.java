@@ -15,11 +15,12 @@ public class BarIndicator implements Indicator<Bar> {
     }
 
     @Override
-    public void update(MarketUpdate update) {
+    public Bar update(MarketUpdate update) {
         switch (update) {
             case PriceUpdate p -> handlePriceUpdate(p);
             default -> { }
         }
+        return value();
     }
 
     @Override

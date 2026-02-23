@@ -8,13 +8,13 @@ public class BarBuilder {
     private Double close = 0.0;
 
     public BarBuilder(PriceUpdate update) {
-        open = update.getPrice();
-        firstTimestamp = update.getTimestamp();
+        open = update.price();
+        firstTimestamp = update.timestamp();
         update(update);
     }
 
     public void update(PriceUpdate update) {
-        Double price = update.getPrice();
+        Double price = update.price();
         if (price > high) {
             high = price;
         }

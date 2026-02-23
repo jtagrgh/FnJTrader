@@ -1,4 +1,4 @@
 public interface Indicator<R> {
-    void update(MarketUpdate update);
+    R update(MarketUpdate update);
     R value();
 }
