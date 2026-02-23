@@ -4,13 +4,7 @@ import Events.Order;
 
 import Events.MarketUpdate.*;
 
-public class FixedBreakTrader implements Indicator<Order> {
-    private final FixedBreakIndicator indicator;
-
-    public FixedBreakTrader(FixedBreakIndicator indicator) {
-        this.indicator = indicator;
-    }
-
+public record FixedBreakTrader(Indicator<FixedBreakIndicator.R> indicator) implements Indicator<Order> {
     @Override
     public Order update(MarketUpdate update) {
         indicator.update(update);

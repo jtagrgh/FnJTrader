@@ -4,18 +4,16 @@ import Events.MarketUpdate.PriceUpdate;
 
 import java.time.Instant;
 
-public record Bar(Instant openTime, Double open, Double high, Double low, Double close) {
+public record Bar(Double open, Double high, Double low, Double close) {
 
     public static class Builder {
         private final Double open;
-        private final Instant firstTimestamp;
         private Double high = 0.0;
         private Double low = 0.0;
         private Double close = 0.0;
 
         public Builder(PriceUpdate update) {
             open = update.price();
-            firstTimestamp = update.timestamp();
             update(update);
         }
 
@@ -31,7 +29,7 @@ public record Bar(Instant openTime, Double open, Double high, Double low, Double
         }
 
         public Bar build() {
-            return new Bar(firstTimestamp, open, high, low, close);
+            return new Bar(open, high, low, close);
         }
     }
 }

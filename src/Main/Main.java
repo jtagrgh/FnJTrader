@@ -4,6 +4,8 @@ import Indicator.*;
 import Events.MarketUpdate.*;
 import Events.Bar;
 
+import System.Tester;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -26,26 +28,32 @@ class Main {
             throw new RuntimeException(e);
         }
 
-        Stream<MarketUpdate> marketUpdateStream = lines.stream().map(Main::lineToBar);
+
+        LineBarMaker lineBarMaker = new LineBarMaker();
+        Stream<MarketUpdate> marketUpdateStream = lines.stream().map(lineBarMaker::makeBar);
 
         FixedBreakIndicator breakIndicator = new FixedBreakIndicator(300);
-        FixedBreakTrader breakTrader = new FixedBreakTrader(breakIndicator);
+        FixedBreakTrader breakTrader = new FixedBreakTrader(new Printer<FixedBreakIndicator.R>(breakIndicator));
         ClampedTrader clampedTrader = new ClampedTrader(0, 5, breakTrader);
         ProfitIndicator profitIndicator = new ProfitIndicator(clampedTrader);
+        UpdateOnce<Double> updateOnce = new UpdateOnce<Double>(profitIndicator);
+        Printer<Double> printer = new Printer<Double>(updateOnce);
 
-        marketUpdateStream.map((MarketUpdate e) -> {
-            return e.toString() + " -> " + profitIndicator.update(e).toString();
-        }).forEach(System.out::println);
+        Tester tester = new Tester(marketUpdateStream, printer);
 
+        tester.run();
     }
 
-    public static BarUpdate lineToBar(String line) {
-        final String[] terms = line.split(",");
-        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ssXXX");
-        final Instant timestamp = OffsetDateTime.parse(terms[0], formatter).toInstant();
-        final Bar bar = new Bar(timestamp, Double.valueOf(terms[1]), Double.valueOf(terms[2]),
-                Double.valueOf(terms[3]), Double.valueOf(terms[4]));
-        return new BarUpdate(timestamp, "GOOGL", bar);
+    public static class LineBarMaker {
+        private int index = 0;
+
+        public BarUpdate makeBar(String line) {
+            final String[] terms = line.split(",");
+            final Bar bar = new Bar(Double.valueOf(terms[1]), Double.valueOf(terms[2]),
+                    Double.valueOf(terms[3]), Double.valueOf(terms[4]));
+            return new BarUpdate(index++, "GOOGL", bar);
+        }
     }
+
 }
 

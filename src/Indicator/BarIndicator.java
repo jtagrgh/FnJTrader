@@ -9,7 +9,7 @@ public class BarIndicator implements Indicator<Bar> {
     private final Integer duration;
 
     private Bar.Builder workingBar = null;
-    private Bar lastCompleteBar = new Bar(Instant.now(), 0.0,0.0,0.0,0.0);
+    private Bar lastCompleteBar = new Bar(0.0,0.0,0.0,0.0);
     private Integer updates = 0;
 
     public BarIndicator(Integer duration) {

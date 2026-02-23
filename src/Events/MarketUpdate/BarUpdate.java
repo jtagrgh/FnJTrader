@@ -4,8 +4,8 @@ import java.time.Instant;
 
 import Events.Bar;
 
-public record BarUpdate(Instant timestamp, String ticker, Bar bar) implements MarketUpdate {
+public record BarUpdate(Integer index, String ticker, Bar bar) implements MarketUpdate {
     public PriceUpdate toPriceUpdate () {
-        return new PriceUpdate(timestamp(), ticker(), bar().close());
+        return new PriceUpdate(index(), ticker(), bar().close());
     }
 }
