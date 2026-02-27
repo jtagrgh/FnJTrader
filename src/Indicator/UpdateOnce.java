@@ -8,6 +8,7 @@ import java.util.Set;
 public class UpdateOnce<R> implements Indicator<R> {
     private final Set<Integer> cache = new HashSet<Integer>();
     private final Indicator<R> indicator;
+    private R value = null;
 
     public UpdateOnce(Indicator<R> indicator) {
         this.indicator = indicator;
@@ -15,14 +16,14 @@ public class UpdateOnce<R> implements Indicator<R> {
 
     @Override
     public R update(MarketUpdate update) {
-        if (!cache.contains(update.index())) {
-            indicator.update(update);
+        final Integer index = update.index();
+
+        if (!cache.contains(index)) {
+            value = indicator.update(update);
+            cache.add(index);
         }
-        return indicator.value();
+
+        return value;
     }
 
-    @Override
-    public R value() {
-        return indicator.value();
-    }
 }

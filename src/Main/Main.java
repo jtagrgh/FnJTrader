@@ -9,16 +9,12 @@ import System.Tester;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Stream;
 
 class Main {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
 
         List<String> lines;
 
@@ -30,16 +26,15 @@ class Main {
 
 
         LineBarMaker lineBarMaker = new LineBarMaker();
-        Stream<MarketUpdate> marketUpdateStream = lines.stream().map(lineBarMaker::makeBar);
+        Stream<PriceUpdate> marketUpdateStream = lines.stream().map(lineBarMaker::makeBar)
+                .map(BarUpdate::toPriceUpdate);
 
-        FixedBreakIndicator breakIndicator = new FixedBreakIndicator(300);
-        FixedBreakTrader breakTrader = new FixedBreakTrader(new Printer<FixedBreakIndicator.R>(breakIndicator));
-        ClampedTrader clampedTrader = new ClampedTrader(0, 5, breakTrader);
-        ProfitIndicator profitIndicator = new ProfitIndicator(clampedTrader);
-        UpdateOnce<Double> updateOnce = new UpdateOnce<Double>(profitIndicator);
-        Printer<Double> printer = new Printer<Double>(updateOnce);
+        Indicator<Double> indicator = new PrevPeriodHiReversal(10)
+                .with(Pyramid.withCap(5))
+                .with(ProfitIndicator::new)
+                .with(Printer.withHeader("Profit: "));
 
-        Tester tester = new Tester(marketUpdateStream, printer);
+        Tester tester = new Tester(marketUpdateStream, indicator);
 
         tester.run();
     }

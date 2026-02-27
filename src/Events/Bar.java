@@ -12,13 +12,12 @@ public record Bar(Double open, Double high, Double low, Double close) {
         private Double low = 0.0;
         private Double close = 0.0;
 
-        public Builder(PriceUpdate update) {
-            open = update.price();
-            update(update);
+        public Builder(Double price) {
+            open = price;
+            update(price);
         }
 
-        public void update(PriceUpdate update) {
-            Double price = update.price();
+        public void update(Double price) {
             if (price > high) {
                 high = price;
             }
